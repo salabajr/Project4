@@ -5,7 +5,7 @@
 //  Created by Nathan Wei on 3/8/24.
 //
 
-#include "Router.h"
+#include "router.h"
 #include "geotools.h"
 #include <vector>
 #include <queue>
@@ -35,7 +35,7 @@ vector<GeoPoint> Router::route(const GeoPoint& pt1, const GeoPoint& pt2) const
     {
         GeoPoint current = openSet.top();
         openSet.pop();
-        
+        // equal to the end
         if (current.to_string() == pt2.to_string())
         {
             return reconstruct_path(cameFrom, current);

@@ -49,9 +49,11 @@ int main()
      cerr << "Diddy: " << point.to_string();
      */
     Router E = Router(a);
-    vector<GeoPoint> fast = E.route(GeoPoint("34.0630614", "-118.4468781") , GeoPoint("34.0614911", "-118.4464410"));
-    for (int i = 0; i < fast.size(); i++)
-        cerr << fast[i].to_string() << endl;
+ //   vector<GeoPoint> fast = E.route(GeoPoint("34.0630614", "-118.4468781") , GeoPoint("34.0614911", "-118.4464410"));
+    vector<GeoPoint> path2 = E.route(GeoPoint("34.0720093",  "-118.4458886") , GeoPoint("34.0630614", "-118.4468781"));
+    
+    for (int i = 0; i < path2.size(); i++)
+        cerr << path2[i].to_string() << endl;
     
     
 }
