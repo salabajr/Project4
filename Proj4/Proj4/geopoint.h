@@ -10,8 +10,8 @@ struct GeoPoint
   GeoPoint(const std::string& lat, const std::string& lon)
    : sLatitude(lat), sLongitude(lon)
   {
-    latitude = std::stof(lat);
-    longitude = std::stof(lon);
+    latitude = std::stod(lat);
+    longitude = std::stod(lon);
   }
 
   GeoPoint() : GeoPoint("0.0000000", "0.0000000") {}
@@ -28,3 +28,4 @@ struct GeoPoint
 
 
 #endif  // GEOPOINT_H
+
