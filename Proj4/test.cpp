@@ -6,10 +6,13 @@
 //
 
 #include "HashMap.h"
+#include "geodb.h"
+#include "geotools.h"
 using namespace std;
 
 int main()
 {
+/*
  // Define a hashmap that maps strings to doubles and has a maximum
  // load factor of 0.2. It will initially have 10 buckets when empty.
  HashMap<double> nameToGPA(1.0);
@@ -31,4 +34,20 @@ int main()
  nameToGPA.insert("Carey", 4.0); // Carey deserves a 4.0
  // sees if linda is in the map; if not, creates a new entry for linda in map
  cout << nameToGPA["Linda"]; // prints zero
+ */
+    string pathName = "/Users/nathanwei/Desktop/mapdata.txt";
+    GeoDatabase a;
+    
+    cerr << a.load(pathName) << endl;
+    
+    vector<GeoPoint> hi = a.get_connected_points(midpoint(GeoPoint("34.0620596", "-118.4467237"), GeoPoint("34.0613323", "-118.4461140")));
+    for (int i = 0; i < hi.size(); i++)
+        cerr << hi[i].to_string() << endl;
+    GeoPoint point = GeoPoint("34.0620596", "-118.4467237");
+    if (a.get_poi_location("Fox Theatersad", point))
+        cerr << "Diddy: " << point.to_string();
+    
 }
+
+
+
