@@ -29,7 +29,9 @@ private:
         std::string path;
         Relation(const GeoPoint g, const std::string p) : gp(g), path(p) {}
     };
+    // maps name of POI to GeoPoints
     HashMap<GeoPoint> POItoGeo;
+    // maps GeoPoints to vector containing connected GeoPoints and street names
     HashMap<std::vector<Relation>> GEOtoConnected;
     void addRelation(const GeoPoint startSeg, const GeoPoint endSeg, const std::string streetName, const std::vector<GeoPoint> poiGeo);
 };

@@ -10,16 +10,19 @@
 #include <vector>
 #include <queue>
 #include <functional>
+#include <algorithm>
 #include "HashMap.h"
 
 using namespace std;
 
 Router::Router(const GeoDatabaseBase& geo_db) : m_geo_db(geo_db) {}
 
+// A* algorithm
 vector<GeoPoint> Router::route(const GeoPoint& pt1, const GeoPoint& pt2) const
-{
+{ // f = g + h
     HashMap<GeoPoint> cameFrom;
     HashMap<double> g;
+    // lamda comparison
     auto comp = [&](const GeoPoint& left, const GeoPoint& right)
     {
         double leftf_n = *g.find(left.to_string()) + distance_earth_miles(left, pt2);
@@ -41,8 +44,8 @@ vector<GeoPoint> Router::route(const GeoPoint& pt1, const GeoPoint& pt2) const
             return reconstruct_path(cameFrom, current);
         }
         
-        auto neighbors = m_geo_db.get_connected_points(current);
-        for (const auto& neighbor : neighbors)
+        vector<GeoPoint> neighbors = m_geo_db.get_connected_points(current);
+        for (const GeoPoint& neighbor : neighbors)
         {
             double tentative_GScore = *g.find(current.to_string()) + distance_earth_miles(current, neighbor);
             if (g.find(neighbor.to_string())  == nullptr || tentative_GScore < *g.find(neighbor.to_string()))
@@ -55,7 +58,7 @@ vector<GeoPoint> Router::route(const GeoPoint& pt1, const GeoPoint& pt2) const
     }
     return {};
 }
-
+// helper function to construct path from A* algorithm
 vector<GeoPoint> Router::reconstruct_path(HashMap<GeoPoint>& cameFrom, GeoPoint current) const
 {
         vector<GeoPoint> path;

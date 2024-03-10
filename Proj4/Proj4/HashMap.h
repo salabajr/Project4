@@ -10,6 +10,7 @@
 #include <iostream>
 #include <vector>
 #include <list>
+#include <algorithm>
 
 template <typename T>
 class HashMap
@@ -18,6 +19,8 @@ public:
  HashMap(double max_load = 0.75) : maxLoadFactor(max_load), numItems(0), numBuckets(10)
  {
      buckets.resize(numBuckets);
+     if (maxLoadFactor <= 0)
+         maxLoadFactor = 0.75;
  }
 // constructor
  ~HashMap() {}
@@ -48,6 +51,7 @@ public:
      }
      bucket.push_back({key, value});
      numItems++;
+     // Check if we have exceeded the load factor
      double loadFactor = static_cast<double>(numItems) /numBuckets;
      if (loadFactor > maxLoadFactor)
          rehash();
@@ -59,25 +63,30 @@ public:
  // It returns a reference to the newly created value in the map.
  T& operator[](const std::string& key)
  {
-     T* p = find(key);
-     if (p == nullptr)
+     
+     T* ptr = find(key);
+     if (ptr == nullptr)
      {
          insert(key, T());
-         p = find(key);
+         ptr = find(key);
      }
-     return *p;
+     return *ptr;
  }
  // If no association exists with the given key, return nullptr; otherwise,
  // return a pointer to the value associated with that key. This pointer can be
  // used to examine that value within the map.
  const T* find(const std::string& key) const
 {
+    // send the key through the hash function
     size_t index = std::hash<std::string>()(key) % numBuckets;
-    auto& bucket = buckets[index];
+    // reference becuase we can change the value
+    const std::list<KeyValuePair>& bucket = buckets[index];
+    // empty bucket means there are no assocations with the given key
     if (bucket.size() == 0)
         return nullptr;
     else
     {
+        // finding the value associated with a key
         for (auto it = bucket.begin(); it != bucket.end(); it++)
         {
             if (it->key == key)
@@ -101,16 +110,19 @@ private:
     };
 
     std::vector<std::list<KeyValuePair>> buckets;
+    double maxLoadFactor;
     int numItems;
     int numBuckets;
-    double maxLoadFactor;
-    void rehash() {
+
+    void rehash() 
+    {
+        // set a new size for the hash
         int newSize = numBuckets * 2;
         numBuckets = newSize;
         std::vector<std::list<KeyValuePair>> newBuckets(newSize);
-        for (const auto& bucket : buckets)
+        for (const std::list<KeyValuePair>& bucket : buckets)
         {
-             for (const auto& kvPair : bucket)
+             for (const KeyValuePair& kvPair : bucket)
              {
                  int i = std::hash<std::string>()(kvPair.key) % newSize;
                  newBuckets[i].push_back(kvPair);

@@ -7,9 +7,11 @@
 
 #ifndef TourGenerator_hpp
 #define TourGenerator_hpp
+
 #include "base_classes.h"
 #include <iostream>
 #include <vector>
+
 class TourGenerator: public TourGeneratorBase
 {
 public:
@@ -18,8 +20,8 @@ public:
  virtual std::vector<TourCommand> generate_tour(const Stops& stops) const;
 private:
     void compass(std::string& direction, const double& angle) const;
-    const RouterBase& m_router;
     const GeoDatabaseBase& m_geodb;
+    const RouterBase& m_router;
 };
 
 #endif /* TourGenerator_hpp */

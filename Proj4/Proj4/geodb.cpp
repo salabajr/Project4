@@ -80,6 +80,7 @@ bool GeoDatabase::load(const string& map_data_file)
 
 void GeoDatabase::addRelation(const GeoPoint startSeg, const GeoPoint endSeg, const string streetName, const vector<GeoPoint> poiGeo)
 {
+    //bidirectional connection between midpoint and star and end of segment
     GeoPoint mid = midpoint(startSeg, endSeg);
     Relation endConnection = Relation(endSeg, streetName);
     Relation midConnection = Relation(mid, streetName);
