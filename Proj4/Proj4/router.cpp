@@ -11,7 +11,7 @@
 #include <queue>
 #include <functional>
 #include <algorithm>
-#include "HashMap.h"
+#include "hashmap.h"
 
 using namespace std;
 
@@ -29,6 +29,7 @@ vector<GeoPoint> Router::route(const GeoPoint& pt1, const GeoPoint& pt2) const
         double rightf_n = *g.find(right.to_string()) + distance_earth_miles(right, pt2);
         return leftf_n > rightf_n;
     };
+    // f score
     priority_queue<GeoPoint, vector<GeoPoint>, decltype(comp)> openSet(comp);
     
     openSet.push(pt1);
@@ -47,9 +48,12 @@ vector<GeoPoint> Router::route(const GeoPoint& pt1, const GeoPoint& pt2) const
         vector<GeoPoint> neighbors = m_geo_db.get_connected_points(current);
         for (const GeoPoint& neighbor : neighbors)
         {
+            // distance (current,neighbor) is the weight of the edge from current to neighbor
+            // tentative_GScore is the distance from start to the neighbor through current
             double tentative_GScore = *g.find(current.to_string()) + distance_earth_miles(current, neighbor);
             if (g.find(neighbor.to_string())  == nullptr || tentative_GScore < *g.find(neighbor.to_string()))
             {
+                // this path to neighbor is better than any previous one
                 cameFrom[neighbor.to_string()] = current;
                 g[neighbor.to_string()] = tentative_GScore;
                 openSet.push(neighbor);

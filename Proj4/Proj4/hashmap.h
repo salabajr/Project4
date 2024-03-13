@@ -63,7 +63,6 @@ public:
  // It returns a reference to the newly created value in the map.
  T& operator[](const std::string& key)
  {
-     
      T* ptr = find(key);
      if (ptr == nullptr)
      {
@@ -122,6 +121,7 @@ private:
         std::vector<std::list<KeyValuePair>> newBuckets(newSize);
         for (const std::list<KeyValuePair>& bucket : buckets)
         {
+            // copying buckets over to newHashmap
              for (const KeyValuePair& kvPair : bucket)
              {
                  int i = std::hash<std::string>()(kvPair.key) % newSize;

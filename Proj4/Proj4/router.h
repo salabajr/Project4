@@ -7,7 +7,7 @@
 
 #ifndef Router_hpp
 #define Router_hpp
-#include "HashMap.h"
+#include "hashmap.h"
 #include "base_classes.h"
 
 class Router: public RouterBase
